@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — WHITE ROSE Security Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<style>
+  .admin-wrap{max-width:1000px;margin:0 auto;padding:64px 32px;}
+  .admin-stat{background:var(--bg-surface);border:1px solid var(--border-bright);padding:28px;margin-bottom:32px;}
+  .admin-stat b{display:block;font-family:var(--display);font-size:38px;background:var(--accent-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);}
+  th{font-family:var(--mono);font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.06em;}
+  #loginGate{text-align:center;padding:120px 20px;}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<div id="loginGate">
+  <h1>Admin Access</h1>
+  <p class="section-desc" style="margin:14px auto 28px;">Log in with your admin account to continue.</p>
+  <button class="btn-primary" onclick="netlifyIdentity.open()">Log In</button>
+</div>
+
+<div id="dashboard" style="display:none;">
+  <div class="admin-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;">
+      <h1>Dashboard</h1>
+      <div style="display:flex;gap:12px;">
+        <a href="admin/index.html" class="btn-secondary">Edit Site Content →</a>
+        <button class="btn-secondary" onclick="netlifyIdentity.logout()">Log Out</button>
+      </div>
+    </div>
+
+    <div class="admin-stat">
+      <b id="totalCount">—</b>
+      <span style="color:var(--text-muted);font-size:13px;">Total requests received</span>
+    </div>
+
+    <h2 style="font-size:20px;margin-bottom:18px;">Recent Requests</h2>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Company</th><th>Service</th><th>Date</th></tr>
+      </thead>
+      <tbody id="subsBody">
+        <tr><td colspan="5" style="color:var(--text-faint);">Loading…</td></tr>
+      </tbody>
+    </table>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:48px 0;">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h2 style="font-size:20px;">Tools Manager</h2>
+      <a href="admin/index.html#/collections/tools/entries/tools" class="btn-primary" style="font-size:13px;padding:10px 18px;">+ Add / Edit Tools</a>
+    </div>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:24px;">Upload tool files via the editor (they go to <code style="font-family:var(--mono);color:var(--accent);">/tools/uploads</code>), or paste external download links. Free tools (price 0) show a Download button; paid tools route through Stripe checkout.</p>
+    <table>
+      <thead>
+        <tr><th>Tool</th><th>Version</th><th>Category</th><th>Price</th><th>Status</th></tr>
+      </thead>
+      <tbody id="toolsBody">
+        <tr><td colspan="5" style="color:var(--text-faint);">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  netlifyIdentity.on('init', user => {
+    if (user && user.app_metadata?.roles?.includes('admin')) {
+      showDashboard();
+    }
+  });
+  netlifyIdentity.on('login', user => {
+    if (user.app_metadata?.roles?.includes('admin')) {
+      showDashboard();
+    } else {
+      alert("Your account doesn't have admin access.");
+      netlifyIdentity.logout();
+    }
+  });
+  netlifyIdentity.on('logout', () => {
+    document.getElementById('loginGate').style.display = 'block';
+    document.getElementById('dashboard').style.display = 'none';
+  });
+
+  function showDashboard(){
+    document.getElementById('loginGate').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    loadSubmissions();
+    loadTools();
+  }
+
+  function loadTools(){
+    fetch('/content/tools.json')
+      .then(r => r.json())
+      .then(data => {
+        const body = document.getElementById('toolsBody');
+        const tools = data.tools || [];
+        if (!tools.length){
+          body.innerHTML = '<tr><td colspan="5" style="color:var(--text-faint);">No tools yet — add your first one above.</td></tr>';
+          return;
+        }
+        body.innerHTML = tools.map(t => `
+          <tr>
+            <td style="font-weight:600;">${t.name}${t.featured ? ' <span style="color:var(--accent);">★</span>' : ''}</td>
+            <td>v${t.version}</td>
+            <td>${t.category}</td>
+            <td style="color:${t.price > 0 ? 'var(--accent)' : '#3ecf8e'};">${t.price > 0 ? '$' + t.price : 'FREE'}</td>
+            <td><a href="admin/index.html#/collections/tools/entries/tools" style="color:var(--blue);">Edit →</a></td>
+          </tr>
+        `).join('');
+      })
+      .catch(() => {
+        document.getElementById('toolsBody').innerHTML = '<tr><td colspan="5" style="color:var(--text-faint);">Tools data unavailable.</td></tr>';
+      });
+  }
+
+  function loadSubmissions(){
+    const token = netlifyIdentity.currentUser().token.access_token;
+    fetch('/.netlify/functions/get-submissions', {
+      headers: { Authorization: 'Bearer ' + token }
+    })
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('totalCount').textContent = data.total;
+        const body = document.getElementById('subsBody');
+        if (!data.submissions.length){
+          body.innerHTML = '<tr><td colspan="5" style="color:var(--text-faint);">No requests yet.</td></tr>';
+          return;
+        }
+        body.innerHTML = data.submissions.map(s => `
+          <tr>
+            <td>${s.name}</td>
+            <td>${s.email}</td>
+            <td>${s.company}</td>
+            <td>${s.service}</td>
+            <td>${new Date(s.created_at).toLocaleDateString()}</td>
+          </tr>
+        `).join('');
+      });
+  }
+</script>
+</body>
+</html>

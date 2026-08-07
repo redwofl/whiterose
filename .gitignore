@@ -1,0 +1,25 @@
+# Local env / secrets — never commit keys
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+
+# Netlify local state
+.netlify/
+
+# Test screenshots (not part of the site)
+screenshots/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/

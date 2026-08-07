@@ -1,0 +1,60 @@
+{
+  "tools": [
+    {
+      "id": "rosescan",
+      "name": "RoseScan",
+      "version": "1.4.2",
+      "category": "Network Recon",
+      "description": "Lightweight network discovery and service fingerprinting scanner with passive mode, CVE hints, and clean JSON/CSV export. Ideal for fast internal asset mapping.",
+      "tags": ["recon", "scanner", "asset mapping"],
+      "price": 0,
+      "file": "https://example.com/downloads/rosescan.zip",
+      "size": "8.4 MB",
+      "os": ["Windows", "Linux"],
+      "featured": true,
+      "created": "2026-08-01"
+    },
+    {
+      "id": "cipherdump",
+      "name": "CipherDump",
+      "version": "2.0.1",
+      "category": "Forensics",
+      "description": "Memory and disk forensics collector that grabs volatile artifacts, process trees, and open network handles before the box gets powered off. Ships with a triage report generator.",
+      "tags": ["forensics", "memory", "triage"],
+      "price": 0,
+      "file": "https://example.com/downloads/cipherdump.zip",
+      "size": "12.1 MB",
+      "os": ["Windows"],
+      "featured": false,
+      "created": "2026-07-22"
+    },
+    {
+      "id": "n0va",
+      "name": "N0VA — Adversary Framework",
+      "version": "3.1.0",
+      "category": "Red Team",
+      "description": "Modular C2 and adversary simulation framework with encrypted comms, operator console, and MITRE ATT&CK-mapped payload builders. Includes full documentation and lab environment.",
+      "tags": ["c2", "red team", "payloads"],
+      "price": 149,
+      "file": "https://example.com/buy/n0va",
+      "size": "46.8 MB",
+      "os": ["Windows", "Linux", "macOS"],
+      "featured": true,
+      "created": "2026-06-30"
+    },
+    {
+      "id": "authforge",
+      "name": "AuthForge",
+      "version": "1.1.5",
+      "category": "AppSec",
+      "description": "Automated authentication and authorization tester — session handling, JWT pitfalls, SSO misconfigs, and OAuth flow abuse, all in one repeatable test pack.",
+      "tags": ["appsec", "auth", "jwt"],
+      "price": 79,
+      "file": "https://example.com/buy/authforge",
+      "size": "5.2 MB",
+      "os": ["Linux", "macOS"],
+      "featured": false,
+      "created": "2026-05-14"
+    }
+  ]
+}

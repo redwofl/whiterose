@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools — WHITE ROSE Security Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<video class="bg-video" autoplay muted loop playsinline>
+  <source src="robot.mp4" type="video/mp4">
+</video>
+<div class="bg-video-overlay"></div>
+
+<div class="grid-bg"></div>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a href="index.html" class="logo" title="White Rose Security Labs"><img src="logo.svg" class="logo-mark" alt="White Rose Security Labs" width="30" height="30">WHITE ROSE</a>
+      <div class="nav-links nav-mobile-hide">
+        <a href="services.html">Services</a>
+        <a href="tools.html" style="color:var(--text);">Tools</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <a href="contact.html" class="nav-cta">Request Assessment</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Tools</div>
+      <span class="eyebrow">White Rose Arsenal</span>
+      <h1>Tools we build, <em>and ship.</em></h1>
+      <p>Every tool here was built in-house and used on real engagements. Grab the free ones, or buy the full kits — licenses are instant, downloads are permanent.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:64px;">
+    <div class="wrap">
+
+      <!-- Toolbar: search + filters -->
+      <div class="toolbar">
+        <input id="toolSearch" type="text" placeholder="Search tools…" aria-label="Search tools">
+        <select id="toolCategory" aria-label="Filter by category">
+          <option value="">All categories</option>
+        </select>
+        <div class="toolbar-pills" role="group" aria-label="Filter by price">
+          <button class="pill active" data-filter="all">All</button>
+          <button class="pill" data-filter="free">Free</button>
+          <button class="pill" data-filter="paid">Paid</button>
+        </div>
+      </div>
+
+      <!-- Purchase success banner (after Stripe checkout) -->
+      <div id="purchaseBanner" class="purchase-banner" style="display:none;"></div>
+
+      <!-- Tools grid -->
+      <div class="tools-grid" id="toolsGrid">
+        <div class="why-card"><span style="color:var(--text-faint);">Loading tools…</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <a href="index.html" class="logo"><img src="logo.svg" class="logo-mark" alt="White Rose Security Labs" width="22" height="22">WHITE ROSE</a>
+    <div class="footer-links">
+      <a href="services.html">Services</a>
+      <a href="tools.html">Tools</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 White Rose Security Labs. All engagements bound by signed rules of engagement.</div>
+  </div>
+</footer>
+
+<script>
+  let allTools = [];
+
+  // ---------- Load tools ----------
+  fetch('/content/tools.json')
+    .then(r => r.json())
+    .then(data => {
+      allTools = data.tools || [];
+      buildCategoryFilter();
+      renderTools();
+    })
+    .catch(() => {
+      document.getElementById('toolsGrid').innerHTML =
+        '<div class="why-card"><span style="color:var(--text-faint);">Tools unavailable.</span></div>';
+    });
+
+  function buildCategoryFilter(){
+    const cats = [...new Set(allTools.map(t => t.category))].sort();
+    const sel = document.getElementById('toolCategory');
+    cats.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c; opt.textContent = c;
+      sel.appendChild(opt);
+    });
+  }
+
+  // ---------- Filtering ----------
+  let filter = 'all';
+  document.querySelectorAll('.toolbar-pills .pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.toolbar-pills .pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filter = btn.dataset.filter;
+      renderTools();
+    });
+  });
+  document.getElementById('toolSearch').addEventListener('input', renderTools);
+  document.getElementById('toolCategory').addEventListener('change', renderTools);
+
+  function currentQuery(){
+    const q = (document.getElementById('toolSearch').value || '').toLowerCase();
+    const cat = document.getElementById('toolCategory').value;
+    return allTools.filter(t => {
+      if (filter === 'free' && t.price > 0) return false;
+      if (filter === 'paid' && t.price === 0) return false;
+      if (cat && t.category !== cat) return false;
+      if (q && !(t.name + ' ' + t.description + ' ' + (t.tags||[]).join(' ')).toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }
+
+  function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function renderTools(){
+    const grid = document.getElementById('toolsGrid');
+    const list = currentQuery();
+    if (!list.length){
+      grid.innerHTML = '<div class="why-card" style="grid-column:1/-1;"><span style="color:var(--text-faint);">No tools match your filters.</span></div>';
+      return;
+    }
+    grid.innerHTML = list.map(t => {
+      const free = t.price === 0;
+      const featured = t.featured ? '<span class="tool-featured">★ Featured</span>' : '';
+      return `
+        <div class="tool-card${free ? ' free' : ' paid'}">
+          <div class="tool-head">
+            <span class="tool-cat">${esc(t.category)}</span>
+            ${featured}
+          </div>
+          <h3>${esc(t.name)} <span class="tool-ver">v${esc(t.version)}</span></h3>
+          <p class="tool-desc">${esc(t.description)}</p>
+          <div class="tool-tags">${(t.tags||[]).map(x => `<span>${esc(x)}</span>`).join('')}</div>
+          <div class="tool-meta">
+            <span class="tool-os">${(t.os||[]).map(esc).join(' · ')}</span>
+            <span class="tool-size">${esc(t.size||'—')}</span>
+          </div>
+          <div class="tool-foot">
+            <span class="tool-price${free ? ' free' : ''}">${free ? 'FREE' : '$' + t.price}</span>
+            ${free
+              ? `<a class="btn-primary tool-btn" href="${esc(t.file)}" download>Download →</a>`
+              : `<button class="btn-primary tool-btn" onclick="buyTool('${esc(t.id)}', this)">Buy · $${t.price} →</button>`}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ---------- Purchase flow ----------
+  function buyTool(id, btn){
+    btn = btn || event.target;
+    btn.disabled = true;
+    btn.textContent = 'Opening checkout…';
+    fetch('/.netlify/functions/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ toolId: id })
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data.url) { window.location.href = data.url; }
+        else {
+          btn.disabled = false;
+          btn.textContent = 'Buy →';
+          showBanner('Could not start checkout. Please try again or email us.', 'error');
+        }
+      })
+      .catch(() => {
+        btn.disabled = false;
+        btn.textContent = 'Buy →';
+        showBanner('Checkout is not configured yet. Please try again later.', 'error');
+      });
+  }
+
+  function showBanner(msg, type){
+    const b = document.getElementById('purchaseBanner');
+    b.textContent = msg;
+    b.className = 'purchase-banner ' + (type === 'error' ? 'err' : 'ok');
+    b.style.display = 'block';
+    setTimeout(() => { b.style.display = 'none'; }, 6000);
+  }
+
+  // ---------- Verify a completed purchase (redirected back from Stripe) ----------
+  (function checkPurchase(){
+    const params = new URLSearchParams(window.location.search);
+    const toolId = params.get('purchased');
+    const sessionId = params.get('session_id');
+    if (!toolId || !sessionId) return;
+    fetch('/.netlify/functions/verify-purchase', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ toolId, sessionId })
+    })
+      .then(r => r.json())
+      .then(data => {
+        const b = document.getElementById('purchaseBanner');
+        if (data.valid && data.file){
+          b.className = 'purchase-banner ok';
+          b.style.display = 'block';
+          b.innerHTML = `✅ Payment confirmed. Your download is ready: <a href="${esc(data.file)}" download><strong>Download ${esc(data.name)} v${esc(data.version)}</strong></a>`;
+          // Also swap the matching card's button to a download link
+          const t = allTools.find(x => x.id === toolId);
+          if (t){
+            t.price = 0; // unlocked locally for this visit
+            renderTools();
+          }
+        } else {
+          b.className = 'purchase-banner err';
+          b.style.display = 'block';
+          b.textContent = 'We could not confirm that purchase. If you were charged, email us and we will sort it out immediately.';
+        }
+      })
+      .catch(() => {});
+  })();
+</script>
+
+<script src="ui.js" defer></script>
+
+</body>
+</html>

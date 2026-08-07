@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHITE ROSE — Offensive Security &amp; Custom Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<video class="bg-video" autoplay muted loop playsinline>
+  <source src="robot.mp4" type="video/mp4">
+</video>
+<div class="bg-video-overlay"></div>
+
+<div class="grid-bg"></div>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo" title="White Rose Security Labs"><img src="logo.svg" class="logo-mark" alt="White Rose Security Labs" width="30" height="30">WHITE ROSE</div>
+      <div class="nav-links nav-mobile-hide">
+        <a href="services.html">Services</a>
+        <a href="tools.html">Tools</a>
+        <a href="#process">Process</a>
+        <a href="about.html">About</a>
+        <a href="#why">Why Us</a>
+      </div>
+      <a href="contact.html" class="nav-cta">Request Assessment</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow" data-depth="12">Offensive Security · Est. 2024</div>
+        <h1 data-depth="26"><span>We break it.</span> <span>We build it.</span> <em>We protect it.</em></h1>
+        <p class="hero-sub" data-depth="18">White Rose is one team across the entire security lifecycle — we <b style="color:var(--text);">break into</b> your systems to find the gaps, <b style="color:var(--text);">build</b> the secure software, apps, and platforms that close them, and <b style="color:var(--accent);">protect</b> what matters with red team operations, VAPT, and compliance consulting.</p>
+        <div class="hero-actions" data-depth="14">
+          <a href="#contact" class="btn-primary">Request an Assessment →</a>
+          <a href="services.html" class="btn-secondary">View Capabilities</a>
+        </div>
+        <div class="hero-stats" data-depth="20">
+          <div class="hero-stat"><b>120+</b><span>Engagements delivered</span></div>
+          <div class="hero-stat"><b>340</b><span>Critical CVEs found</span></div>
+          <div class="hero-stat"><b>&lt;24h</b><span>Avg. triage response</span></div>
+        </div>
+      </div>
+
+      <div class="scan-panel" data-depth="38">
+        <div class="scan-panel-head">
+          <div class="scan-dots"><span></span><span></span><span></span></div>
+          <div class="label">whiterose@ops:~/engagement-04412</div>
+        </div>
+        <div class="scan-body" id="scanBody"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust-bar">
+    <div class="wrap trust-row">
+      <span>OWASP-Aligned</span>
+      <span>PTES Methodology</span>
+      <span>ISO 27001 Consulting</span>
+      <span>NIST 800-115</span>
+      <span>SOC 2 Readiness</span>
+      <span>MITRE ATT&amp;CK Mapped</span>
+    </div>
+  </div>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-tag">Capabilities</span>
+        <h2>Security testing, and the software to back it up.</h2>
+        <p class="section-desc">Eight disciplines, one team. We find the gap, explain the risk in plain terms, and — if you need it — build the fix.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card offense">
+          <span class="service-index">01 / OFFENSE</span>
+          <h3>Red Team Operations</h3>
+          <p>Full-scope adversary simulation against your people, network, and physical perimeter — measuring real detection and response, not just vulnerabilities.</p>
+          <span class="tag">MITRE ATT&amp;CK</span>
+        </div>
+        <div class="service-card offense">
+          <span class="service-index">02 / OFFENSE</span>
+          <h3>VAPT</h3>
+          <p>Vulnerability assessment and penetration testing across web, mobile, cloud, and API surfaces, with severity-ranked findings and reproducible proofs.</p>
+          <span class="tag">CVSS Scored</span>
+        </div>
+        <div class="service-card offense">
+          <span class="service-index">03 / OFFENSE</span>
+          <h3>Network Penetration Testing</h3>
+          <p>Internal and external network testing — segmentation checks, Active Directory attack paths, wireless, and perimeter defenses under real attacker conditions.</p>
+          <span class="tag">Internal + External</span>
+        </div>
+        <div class="service-card">
+          <span class="service-index">04 / ADVISORY</span>
+          <h3>Security Consulting</h3>
+          <p>Risk assessments, compliance readiness (ISO 27001, SOC 2, GDPR), security architecture review, and CISO-level advisory for growing teams.</p>
+          <span class="tag">Compliance-Ready</span>
+        </div>
+        <div class="service-card build">
+          <span class="service-index">05 / BUILD</span>
+          <div class="svc-visual code-visual" aria-hidden="true">
+            <div class="cv-head"><span></span><span></span><span></span><em>build.js</em></div>
+            <div class="cv-body">
+              <div class="cv-line"><b class="c-key">const</b> <b class="c-fn">secure</b> = <b class="c-fn">()</b> =&gt; {</div>
+              <div class="cv-line"><b class="c-key">await</b> <b class="c-fn">threatModel</b>(<b class="c-str">'app'</b>);</div>
+              <div class="cv-line"><b class="c-fn">audit</b>(<b class="c-str">'deps'</b>).<b class="c-fn">then</b>(<b class="c-fn">fix</b>);</div>
+              <div class="cv-line"><b class="c-key">return</b> <b class="c-fn">ship</b>()<span class="cv-cursor"></span>;</div>
+            </div>
+          </div>
+          <h3>Custom Software</h3>
+          <p>Secure-by-design software built for your workflow — internal tools, dashboards, and automation, threat-modeled before the first line of code.</p>
+          <span class="tag">Secure SDLC</span>
+        </div>
+        <div class="service-card build">
+          <span class="service-index">06 / BUILD</span>
+          <div class="svc-visual web-visual" aria-hidden="true">
+            <div class="wv-screen">
+              <div class="wv-bar"><span></span><span></span><span></span><em>whiterose.app</em></div>
+              <div class="wv-body">
+                <div class="wv-load"><i></i></div>
+                <div class="wv-cards"><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+          <h3>Web &amp; App Development</h3>
+          <p>Production web platforms and mobile apps engineered by people who also break them — fewer surprises when it's time for the pentest.</p>
+          <span class="tag">Web · iOS · Android</span>
+        </div>
+        <div class="service-card build">
+          <span class="service-index">07 / BUILD</span>
+          <div class="svc-visual cube-visual" aria-hidden="true">
+            <div class="mini-cube">
+              <div class="mini-face mf-front">3D</div>
+              <div class="mini-face mf-back">WEB</div>
+              <div class="mini-face mf-right">GL</div>
+              <div class="mini-face mf-left">UI</div>
+              <div class="mini-face mf-top">XR</div>
+              <div class="mini-face mf-bottom">·</div>
+            </div>
+          </div>
+          <h3>3D &amp; Interactive Web</h3>
+          <p>Immersive, WebGL-driven product sites and interactive experiences for brands that want their front door to feel as sharp as their backend.</p>
+          <span class="tag">WebGL / Three.js</span>
+        </div>
+        <div class="service-card">
+          <span class="service-index">08 / ADVISORY</span>
+          <h3>Incident Response</h3>
+          <p>On-call breach response and forensics — containment, root-cause analysis, and a remediation plan you can hand straight to your board.</p>
+          <span class="tag">24/7 On-Call</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-tag">Methodology</span>
+        <h2>How an engagement runs.</h2>
+        <p class="section-desc">Same rigor whether it's a two-week VAPT or a quarter-long red team campaign.</p>
+      </div>
+      <div class="process-list">
+        <div class="process-item">
+          <div class="process-num">01</div>
+          <h4>Scope &amp; Recon</h4>
+          <p class="process-desc">We define rules of engagement, then map your attack surface — assets, subdomains, exposed services, and human attack vectors.</p>
+        </div>
+        <div class="process-item">
+          <div class="process-num">02</div>
+          <h4>Exploitation</h4>
+          <p class="process-desc">Controlled exploitation of discovered weaknesses to confirm real-world impact, not theoretical risk. Nothing is broken that we can't put back.</p>
+        </div>
+        <div class="process-item">
+          <div class="process-num">03</div>
+          <h4>Reporting</h4>
+          <p class="process-desc">A findings report ranked by business impact, with reproduction steps, evidence, and remediation guidance an engineer can act on same-day.</p>
+        </div>
+        <div class="process-item">
+          <div class="process-num">04</div>
+          <h4>Retest &amp; Sign-off</h4>
+          <p class="process-desc">Free retest once fixes ship, plus a closure letter your auditors and stakeholders can rely on.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="spotlight" id="build">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap spotlight-grid">
+      <div>
+        <span class="section-tag" data-depth="6">Engineering Arm</span>
+        <h2 data-depth="16" data-tilt>Same team that attacks it can also build it.</h2>
+        <p class="section-desc" data-depth="10">Most security firms stop at the report. We don't — our engineers ship the software, apps, and web platforms too, so remediation isn't a hand-off to a stranger.</p>
+        <ul class="spotlight-list">
+          <li data-n="01"><b>Custom Software</b><span>Internal tools and automation, threat-modeled from day one.</span></li>
+          <li data-n="02"><b>Web Platforms</b><span>Marketing sites to full SaaS products, hardened by default.</span></li>
+          <li data-n="03"><b>Mobile Apps</b><span>iOS and Android builds with secure storage and API design baked in.</span></li>
+          <li data-n="04"><b>3D / WebGL Sites</b><span>Interactive, immersive front-ends for brands that want to stand out.</span></li>
+        </ul>
+      </div>
+      <div class="cube-wrap" aria-hidden="true">
+        <div class="cube-tilt">
+          <div class="cube">
+          <div class="cube-face cf-front">SECURE</div>
+          <div class="cube-face cf-back">BUILD</div>
+          <div class="cube-face cf-right">TEST</div>
+          <div class="cube-face cf-left">SHIP</div>
+          <div class="cube-face cf-top">AUDIT</div>
+          <div class="cube-face cf-bottom">WHITE ROSE</div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-tag">Why White Rose</span>
+        <h2>Numbers, not adjectives.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card"><b>120+</b><span>Assessments &amp; engagements completed across fintech, healthcare, and SaaS</span></div>
+        <div class="why-card"><b>340</b><span>Critical and high-severity vulnerabilities identified and remediated</span></div>
+        <div class="why-card"><b>98%</b><span>Client retention on annual security retainers</span></div>
+        <div class="why-card"><b>&lt;24h</b><span>Average response time on active incident calls</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="contact">
+    <div class="wrap">
+      <span class="section-tag">Get Started</span>
+      <h2>Find out what an attacker would find first.</h2>
+      <p class="section-desc">Tell us about your environment. We'll come back with a scoped proposal within one business day.</p>
+      <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Request received →';">
+        <input type="email" placeholder="you@company.com" required aria-label="Work email">
+        <button type="submit" class="btn-primary">Request Assessment</button>
+      </form>
+      <p class="cta-note">NDA available on request · No cost for initial scoping call</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div class="logo"><img src="logo.svg" class="logo-mark" alt="White Rose Security Labs" width="22" height="22">WHITE ROSE</div>
+    <div class="footer-links">
+      <a href="services.html">Services</a>
+      <a href="tools.html">Tools</a>
+      <a href="about.html">About</a>
+      <a href="#process">Process</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 White Rose Security Labs. All engagements bound by signed rules of engagement.</div>
+  </div>
+</footer>
+
+<script>
+  const lines = [
+    {html:'<span class="prompt">$</span> whiterose scan --target client-infra.io --deep', delay:600},
+    {html:'<span class="dim">[ ] resolving attack surface...</span>', delay:700},
+    {html:'<span class="ok">[+]</span> 214 assets discovered · 6 exposed services', delay:600},
+    {html:'<span class="warn">[!]</span> TLS 1.0 permitted on payments-api.client-infra.io', delay:650},
+    {html:'<span class="warn">[!]</span> IDOR candidate: /api/v2/invoices/{id}', delay:650},
+    {html:'<span class="ok">[+]</span> Mapping findings to MITRE ATT&amp;CK...', delay:700},
+    {html:'<span class="dim">[ ] compiling report → engagement-04412.pdf</span>', delay:700},
+    {html:'<span class="ok">[✓]</span> Report ready for client review.', delay:900},
+  ];
+
+  const body = document.getElementById('scanBody');
+  let i = 0;
+
+  function typeLoop(){
+    body.innerHTML = '';
+    i = 0;
+    step();
+  }
+
+  function step(){
+    if(i >= lines.length){
+      setTimeout(typeLoop, 2200);
+      return;
+    }
+    const div = document.createElement('div');
+    div.className = 'scan-line';
+    div.innerHTML = lines[i].html;
+    body.appendChild(div);
+    i++;
+    setTimeout(step, lines[i-1].delay);
+  }
+
+  const cursorLine = document.createElement('div');
+  cursorLine.className = 'scan-line';
+  cursorLine.style.opacity = '1';
+  cursorLine.innerHTML = '<span class="cursor"></span>';
+
+  typeLoop();
+  setInterval(()=>{}, 0);
+</script>
+
+<script src="ui.js" defer></script>
+
+</body>
+</html>

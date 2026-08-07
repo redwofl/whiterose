@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — WHITE ROSE Security Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<video class="bg-video" autoplay muted loop playsinline>
+  <source src="robot.mp4" type="video/mp4">
+</video>
+<div class="bg-video-overlay"></div>
+
+<div class="grid-bg"></div>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a href="index.html" class="logo" title="White Rose Security Labs"><img src="logo.svg" class="logo-mark" alt="White Rose Security Labs" width="30" height="30">WHITE ROSE</a>
+      <div class="nav-links nav-mobile-hide">
+        <a href="services.html">Services</a>
+        <a href="tools.html">Tools</a>
+        <a href="index.html#process">Process</a>
+        <a href="about.html">About</a>
+        <a href="index.html#why">Why Us</a>
+      </div>
+      <a href="contact.html" class="nav-cta">Request Assessment</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="breadcrumb" data-depth="10"><a href="index.html">Home</a> / Contact</div>
+      <span class="eyebrow" data-depth="14">Get In Touch</span>
+      <h1 data-depth="26">Tell us what you're securing.</h1>
+      <p data-depth="18">Fill in the form and we'll come back with a scoped proposal within one business day — no auto-generated quote, a real person reads every request.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap contact-grid">
+
+      <div>
+        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form-full" id="contactForm">
+          <input type="hidden" name="form-name" value="contact">
+          <p style="display:none;"><label>Don't fill this out: <input name="bot-field"></label></p>
+          <div class="field">
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" placeholder="Jordan Lee" required>
+          </div>
+          <div class="field">
+            <label for="email">Work email</label>
+            <input id="email" name="email" type="email" placeholder="you@company.com" required>
+          </div>
+          <div class="field">
+            <label for="company">Company</label>
+            <input id="company" name="company" type="text" placeholder="Company name" required>
+          </div>
+          <div class="field">
+            <label for="service">Service of interest</label>
+            <select id="service" name="service">
+              <option>Red Team Operations</option>
+              <option>VAPT</option>
+              <option>Network Penetration Testing</option>
+              <option>Security Consulting</option>
+              <option>Custom Software</option>
+              <option>Web &amp; App Development</option>
+              <option>3D / Interactive Web</option>
+              <option>Incident Response</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="message">Tell us about your environment</label>
+            <textarea id="message" name="message" placeholder="A few lines on what you'd like tested or built, and any timeline you're working against."></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="margin-top:8px; align-self:flex-start;">Send Request →</button>
+          <p id="formStatus" class="cta-note" style="margin-top:4px;"></p>
+        </form>
+        <script>
+          document.getElementById('contactForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const form = e.target;
+            const data = new FormData(form);
+            fetch('/', { method: 'POST', body: new URLSearchParams(data) })
+              .then(() => {
+                document.getElementById('formStatus').textContent = "Request received — we'll be in touch within one business day.";
+                form.reset();
+              })
+              .catch(() => {
+                document.getElementById('formStatus').textContent = "Something went wrong — please email us directly.";
+              });
+          });
+        </script>
+      </div>
+
+      <div>
+        <div class="info-card">
+          <h5>Direct Contact</h5>
+          <p>hello@redlinesec.io</p>
+          <p>+91 98765 43210</p>
+        </div>
+        <div class="info-card">
+          <h5>Office</h5>
+          <p>White Rose Security Labs</p>
+          <p>BKC, Mumbai, Maharashtra, India</p>
+        </div>
+        <div class="info-card">
+          <h5>Incident Response Hotline</h5>
+          <p>Active breach? Call the 24/7 line directly.</p>
+          <p>+91 98765 00000</p>
+        </div>
+        <div class="info-card">
+          <h5>Before You Write</h5>
+          <p>NDAs are available on request and initial scoping calls are free — no obligation, no upsell script.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <a href="index.html" class="logo"><img src="logo.svg" class="logo-mark" alt="White Rose Security Labs" width="22" height="22">WHITE ROSE</a>
+    <div class="footer-links">
+      <a href="services.html">Services</a>
+      <a href="tools.html">Tools</a>
+      <a href="about.html">About</a>
+      <a href="index.html#process">Process</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 White Rose Security Labs. All engagements bound by signed rules of engagement.</div>
+  </div>
+</footer>
+
+<script src="ui.js" defer></script>
+</body>
+</html>

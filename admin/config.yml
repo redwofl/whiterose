@@ -1,0 +1,53 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "updates"
+    label: "Site Updates / Features"
+    files:
+      - file: "content/updates.json"
+        label: "Updates List"
+        name: "updates"
+        fields:
+          - label: "Items"
+            name: "items"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Date", name: "date", widget: "datetime" }
+
+  - name: "tools"
+    label: "Tools / Downloads"
+    media_folder: "tools/uploads"
+    public_folder: "/tools/uploads"
+    files:
+      - file: "content/tools.json"
+        label: "Tools List"
+        name: "tools"
+        fields:
+          - label: "Tools"
+            name: "tools"
+            widget: "list"
+            summary: "{{name}}"
+            fields:
+              - { label: "ID (slug, no spaces)", name: "id", widget: "string" }
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Version", name: "version", widget: "string" }
+              - { label: "Category", name: "category", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Tags", name: "tags", widget: "list", default: [""] }
+              - { label: "Price (USD, 0 = free)", name: "price", widget: "number", value_type: "int" }
+              - label: "Download file (upload or paste link)"
+                name: "file"
+                widget: "file"
+                hint: "Upload the tool archive to /tools/uploads, or paste an external download URL."
+              - { label: "File size (e.g. 8.4 MB)", name: "size", widget: "string" }
+              - { label: "Platforms (OS)", name: "os", widget: "list", default: [""] }
+              - { label: "Featured", name: "featured", widget: "boolean", default: false }
+              - { label: "Created (date)", name: "created", widget: "datetime" }
