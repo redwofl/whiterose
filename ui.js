@@ -113,3 +113,81 @@ revealEls.forEach(el => io.observe(el));
   });
 })();
 
+// ============ Mobile navigation: hamburger button + slide-in drawer ============
+// Builds the menu entirely from the existing desktop nav so every page gets a
+// working mobile menu with zero HTML changes. The button + drawer only appear
+// on small screens (CSS hides/shows them).
+(function(){
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+  var links = nav.querySelector('.nav-links');
+  if (!links) return;
+
+  // Hamburger button
+  var toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'nav-toggle';
+  toggle.setAttribute('aria-label', 'Open menu');
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.innerHTML = '<span></span><span></span><span></span>';
+  nav.appendChild(toggle);
+
+  // Drawer: backdrop + sliding panel, links cloned from the desktop nav
+  var drawer = document.createElement('div');
+  drawer.className = 'mobile-menu';
+  drawer.setAttribute('aria-hidden', 'true');
+  drawer.innerHTML =
+    '<div class="mobile-menu-backdrop"></div>' +
+    '<div class="mobile-menu-panel"></div>';
+  var panel = drawer.querySelector('.mobile-menu-panel');
+
+  var clone = links.cloneNode(true);
+  clone.classList.remove('nav-mobile-hide');
+  clone.classList.add('mobile-links');
+  panel.appendChild(clone);
+
+  var cta = nav.querySelector('.nav-cta');
+  if (cta){
+    var ctaClone = cta.cloneNode(true);
+    ctaClone.classList.add('mobile-cta');
+    panel.appendChild(ctaClone);
+  }
+
+  var closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'mobile-menu-close';
+  closeBtn.setAttribute('aria-label', 'Close menu');
+  closeBtn.textContent = '×';
+  panel.appendChild(closeBtn);
+
+  document.body.appendChild(drawer);
+
+  function isOpen(){ return drawer.classList.contains('open'); }
+
+  function open(){
+    drawer.classList.add('open');
+    drawer.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'Close menu');
+    document.body.classList.add('nav-open');
+  }
+
+  function close(){
+    drawer.classList.remove('open');
+    drawer.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    document.body.classList.remove('nav-open');
+  }
+
+  toggle.addEventListener('click', function(){ isOpen() ? close() : open(); });
+  drawer.querySelector('.mobile-menu-backdrop').addEventListener('click', close);
+  drawer.querySelector('.mobile-menu-close').addEventListener('click', close);
+  panel.addEventListener('click', function(e){
+    if (e.target.closest('a')) close();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && isOpen()) close();
+  });
+})();
+
