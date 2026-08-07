@@ -1,3 +1,16 @@
 [build]
   publish = "."
   functions = "netlify/functions"
+
+# Netlify can serve .mp4 as application/octet-stream by default, which
+# stops browsers from playing the background video. Force video/mp4.
+[[headers]]
+  for = "/robot.mp4"
+  [headers.values]
+    Content-Type = "video/mp4"
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/*.mp4"
+  [headers.values]
+    Content-Type = "video/mp4"
