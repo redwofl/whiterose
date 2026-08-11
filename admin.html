@@ -46,10 +46,10 @@
     <h2 style="font-size:20px;margin-bottom:18px;">Recent Requests</h2>
     <table>
       <thead>
-        <tr><th>Name</th><th>Email</th><th>Company</th><th>Service</th><th>Date</th></tr>
+        <tr><th>Name</th><th>Email</th><th>Phone</th><th>Company</th><th>Service</th><th>Date</th></tr>
       </thead>
       <tbody id="subsBody">
-        <tr><td colspan="5" style="color:var(--text-faint);">Loading…</td></tr>
+        <tr><td colspan="6" style="color:var(--text-faint);">Loading…</td></tr>
       </tbody>
     </table>
 
@@ -132,13 +132,14 @@
         document.getElementById('totalCount').textContent = data.total;
         const body = document.getElementById('subsBody');
         if (!data.submissions.length){
-          body.innerHTML = '<tr><td colspan="5" style="color:var(--text-faint);">No requests yet.</td></tr>';
+          body.innerHTML = '<tr><td colspan="6" style="color:var(--text-faint);">No requests yet.</td></tr>';
           return;
         }
         body.innerHTML = data.submissions.map(s => `
           <tr>
             <td>${s.name}</td>
             <td>${s.email}</td>
+            <td>${s.phone || '—'}</td>
             <td>${s.company}</td>
             <td>${s.service}</td>
             <td>${new Date(s.created_at).toLocaleDateString()}</td>

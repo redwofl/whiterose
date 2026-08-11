@@ -31,6 +31,7 @@ exports.handler = async (event, context) => {
         submissions: submissions.map(s => ({
           name: s.data.name || '',
           email: s.data.email || '',
+          phone: s.data.phone || '',
           company: s.data.company || '',
           service: s.data.service || '',
           message: s.data.message || '',
