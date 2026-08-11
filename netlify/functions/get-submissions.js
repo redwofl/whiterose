@@ -8,6 +8,10 @@ exports.handler = async (event, context) => {
   const SITE_ID = process.env.NETLIFY_SITE_ID;
   const API_TOKEN = process.env.NETLIFY_API_TOKEN;
 
+  if (!SITE_ID || !API_TOKEN) {
+    return { statusCode: 500, body: JSON.stringify({ error: 'Missing NETLIFY_SITE_ID or NETLIFY_API_TOKEN environment variables' }) };
+  }
+
   try {
     const formsRes = await fetch(`https://api.netlify.com/api/v1/sites/${SITE_ID}/forms`, {
       headers: { Authorization: `Bearer ${API_TOKEN}` }
