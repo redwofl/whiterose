@@ -140,6 +140,7 @@
           document.getElementById('subsBody').innerHTML =
             '<tr><td colspan="6" style="color:var(--accent);">Error loading requests: ' +
             escHtml(data && data.error ? data.error : 'unknown error') +
+            (data && data.reason ? ' (' + escHtml(data.reason) + (data.status ? ' HTTP ' + escHtml(String(data.status)) : '') + ')' : '') +
             '</td></tr>';
           return;
         }
