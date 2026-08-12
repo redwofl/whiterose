@@ -2,6 +2,10 @@
   publish = "."
   functions = "netlify/functions"
 
+# Keep Netlify Forms detection enabled for HTML forms (data-netlify="true").
+[build.processing]
+  ignore_html_forms = false
+
 # Netlify can serve .mp4 as application/octet-stream by default, which
 # stops browsers from playing the background video. Force video/mp4.
 [[headers]]
