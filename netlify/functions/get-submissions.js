@@ -1,8 +1,37 @@
-exports.handler = async (event, context) => {
-  const { user } = context.clientContext || {};
+// GET /.netlify/functions/get-submissions
+// Verifies the caller's Netlify Identity JWT directly against the Identity
+// user endpoint, then returns contact-form submissions from the Netlify API.
+// Uses the JWT in the Authorization header because clientContext.user is no
+// longer reliably populated (Netlify Identity is deprecated).
 
-  if (!user || !user.app_metadata?.roles?.includes('admin')) {
+exports.handler = async (event) => {
+  const auth = event.headers && (event.headers.authorization || event.headers.Authorization);
+  if (!auth || !auth.startsWith('Bearer ')) {
     return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized' }) };
+  }
+  const token = auth.slice(7);
+
+  const host = (event.headers && (event.headers.host || event.headers.Host)) || '';
+  if (!host) {
+    return { statusCode: 500, body: JSON.stringify({ error: 'Missing host header' }) };
+  }
+
+  try {
+    // Ask Identity who this token belongs to. 401 means invalid/expired.
+    const userRes = await fetch(`https://${host}/.netlify/identity/user`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (userRes.status !== 200) {
+      return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized' }) };
+    }
+    const user = await userRes.json();
+
+    const roles = (user.app_metadata && user.app_metadata.roles) || [];
+    if (!roles.includes('admin')) {
+      return { statusCode: 403, body: JSON.stringify({ error: 'Forbidden - admin role required' }) };
+    }
+  } catch {
+    return { statusCode: 500, body: JSON.stringify({ error: 'Could not verify identity' }) };
   }
 
   const SITE_ID = process.env.NETLIFY_SITE_ID;

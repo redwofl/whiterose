@@ -140,7 +140,7 @@
           document.getElementById('subsBody').innerHTML =
             '<tr><td colspan="6" style="color:var(--accent);">Error loading requests: ' +
             escHtml(data && data.error ? data.error : 'unknown error') +
-            '. Set NETLIFY_SITE_ID and NETLIFY_API_TOKEN in Netlify → Site settings → Environment variables.</td></tr>';
+            '</td></tr>';
           return;
         }
         document.getElementById('totalCount').textContent = data.total;
