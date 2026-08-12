@@ -4,34 +4,43 @@
 // Uses the JWT in the Authorization header because clientContext.user is no
 // longer reliably populated (Netlify Identity is deprecated).
 
-exports.handler = async (event) => {
+exports.handler = async (event, context) => {
   const auth = event.headers && (event.headers.authorization || event.headers.Authorization);
   if (!auth || !auth.startsWith('Bearer ')) {
-    return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized' }) };
+    return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized', reason: 'missing bearer token', cc: !!context.clientContext, ccUser: !!(context.clientContext && context.clientContext.user) }) };
   }
   const token = auth.slice(7);
 
-  const host = (event.headers && (event.headers.host || event.headers.Host)) || '';
-  if (!host) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Missing host header' }) };
+  let user = null;
+
+  // 1) Prefer identity info Netlify may have already decoded from the JWT.
+  if (context.clientContext && context.clientContext.user) {
+    user = context.clientContext.user;
   }
 
-  try {
-    // Ask Identity who this token belongs to. 401 means invalid/expired.
-    const userRes = await fetch(`https://${host}/.netlify/identity/user`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (userRes.status !== 200) {
-      return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized' }) };
+  // 2) Otherwise ask Identity who this token belongs to.
+  if (!user) {
+    const host = (event.headers && (event.headers.host || event.headers.Host)) || '';
+    if (!host) {
+      return { statusCode: 500, body: JSON.stringify({ error: 'Missing host header' }) };
     }
-    const user = await userRes.json();
+    try {
+      const userRes = await fetch(`https://${host}/.netlify/identity/user`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const bodyText = await userRes.text();
+      if (userRes.status !== 200) {
+        return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized', reason: 'identity rejected token', status: userRes.status, tokenSegments: token.split('.').length, body: bodyText.slice(0, 300) }) };
+      }
+      user = JSON.parse(bodyText);
+    } catch (err) {
+      return { statusCode: 500, body: JSON.stringify({ error: 'Could not verify identity', reason: err.message }) };
+    }
+  }
 
-    const roles = (user.app_metadata && user.app_metadata.roles) || [];
-    if (!roles.includes('admin')) {
-      return { statusCode: 403, body: JSON.stringify({ error: 'Forbidden - admin role required' }) };
-    }
-  } catch {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Could not verify identity' }) };
+  const roles = (user && user.app_metadata && user.app_metadata.roles) || [];
+  if (!roles.includes('admin')) {
+    return { statusCode: 403, body: JSON.stringify({ error: 'Forbidden - admin role required', email: user && user.email, roles }) };
   }
 
   const SITE_ID = process.env.NETLIFY_SITE_ID;
